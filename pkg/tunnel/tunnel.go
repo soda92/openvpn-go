@@ -36,14 +36,17 @@ func Start(ctx context.Context, underlyingDialer SimpleDialer, cfg *config.Confi
 		_ = conn.Close()
 		return nil, kerr
 	} else if len(key) > 0 {
-		conn, err = networkio.NewTLSAuthConn(conn, networkio.TLSAuthConfig{
+		wrapped, werr := networkio.NewTLSAuthConn(conn, networkio.TLSAuthConfig{
 			Key:       key,
 			Direction: direction,
 		})
-		if err != nil {
+		if werr != nil {
+			// NewTLSAuthConn returns nil on error; close the original dialed
+			// connection instead of dereferencing the nil result.
 			_ = conn.Close()
-			return nil, err
+			return nil, werr
 		}
+		conn = wrapped
 	}
 
 	return tun.StartTUN(ctx, conn, cfg)

@@ -31,6 +31,7 @@ func StartTUN(ctx context.Context, conn networkio.FramingConn, config *config.Co
 	// create a session
 	sessionManager, err := session.NewManager(config)
 	if err != nil {
+		_ = conn.Close()
 		return nil, err
 	}
 
@@ -45,6 +46,7 @@ func StartTUN(ctx context.Context, conn networkio.FramingConn, config *config.Co
 	})
 
 	tlsTimeout := time.NewTimer(time.Duration(tlsHandshakeTimeoutSeconds) * time.Second)
+	defer tlsTimeout.Stop()
 
 	// Await for the signal from the session manager to tell us we're ready to start accepting data.
 	// In practice, this means that we already have a valid TunnelInfo at this point
