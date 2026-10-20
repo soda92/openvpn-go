@@ -1,0 +1,10 @@
+openvpn-go is derived from ooni/minivpn
+(https://github.com/ooni/minivpn), Copyright (c) the minivpn authors,
+licensed under GPL-3.0-or-later.
+
+Modifications in this repository add tls-auth support, P_DATA_V1/V2 receive
+handling, AEAD framing fixes, push-request retries, full PUSH_REPLY parsing,
+and public addressing helpers. They are distributed under the same license.
+
+The OpenVPN protocol implementation follows the OpenVPN reference
+implementation (https://github.com/OpenVPN/openvpn), which is GPL-2.0.

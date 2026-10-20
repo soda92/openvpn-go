@@ -1,0 +1,10 @@
+/minivpn
+.vscode
+*.swp
+*.swo
+*.pem
+*.ovpn
+/*.out
+data/*
+measurements/*
+coverage/*
