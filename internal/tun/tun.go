@@ -245,7 +245,11 @@ func (t *tunBioAddr) String() string {
 
 // NetMask returns the configured net mask for the TUN interface.
 func (t *TUN) NetMask() net.IPMask {
-	return net.IPMask(net.ParseIP(t.session.TunnelInfo().NetMask))
+	ip := net.ParseIP(t.session.TunnelInfo().NetMask)
+	if v4 := ip.To4(); v4 != nil {
+		return net.IPMask(v4)
+	}
+	return nil
 }
 
 // AssignedIP returns the virtual IPv4 address pushed by the server.
